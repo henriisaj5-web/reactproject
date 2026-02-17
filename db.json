@@ -1,0 +1,74 @@
+{
+  "page1Products": [
+    {
+      "title": "iPhone Air",
+      "description": "Apple AIR Smartphone",
+      "price": 999,
+      "id": "a9bc"
+    },
+    {
+      "id": "3a43",
+      "title": "iPhone 17 ",
+      "description": "Apple Smartphone",
+      "price": 849
+    },
+    {
+      "id": "9708",
+      "title": "iPhone 17 Pro Max",
+      "description": "Apple PRO Smartphone",
+      "price": 1099
+    },
+    {
+      "id": "fe62",
+      "title": "Macbook Pro",
+      "description": "Apple Laptop",
+      "price": 2999
+    },
+    {
+      "id": "1df0",
+      "title": "Macbook Air",
+      "description": "Apple CPU device",
+      "price": 1399
+    }
+  ],
+  "page2Products": [
+    {
+      "id": "dd4c",
+      "title": "iPad",
+      "description": "Apple Tablet",
+      "price": 899
+    },
+    {
+      "id": "dd10",
+      "title": "iPad Air",
+      "description": "Apple Tablet",
+      "price": 1299
+    },
+    {
+      "id": "f876",
+      "title": "iPad Pro 13\"",
+      "description": "Apple Pro Tablet",
+      "price": 1599
+    }
+  ],
+  "page3Products": [
+    {
+      "id": "1c5d",
+      "title": "Airpods Pro",
+      "description": "Apple Headphones",
+      "price": 259
+    },
+    {
+      "id": "469d",
+      "title": "Airpods 4",
+      "description": "Apple Headphones Wireless",
+      "price": 199
+    },
+    {
+      "id": "6a95",
+      "title": "Airpods Max",
+      "description": "Apple Pro Headphones",
+      "price": 599
+    }
+  ]
+}
