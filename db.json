@@ -1,74 +1,74 @@
 {
   "page1Products": [
     {
-      "title": "iPhone Air",
-      "description": "Apple AIR Smartphone",
-      "price": 999,
-      "id": "a9bc"
-    },
-    {
-      "id": "3a43",
-      "title": "iPhone 17 ",
+      "id": "3b5d",
+      "title": "iPhone 15",
       "description": "Apple Smartphone",
-      "price": 849
+      "price": 799
     },
     {
-      "id": "9708",
-      "title": "iPhone 17 Pro Max",
-      "description": "Apple PRO Smartphone",
+      "id": "0dda",
+      "title": "iPhone 17",
+      "description": "Apple Smartphone",
+      "price": 899
+    },
+    {
+      "id": "4640",
+      "title": "Macbook Pro",
+      "description": "Apple CPU device",
+      "price": 1359
+    },
+    {
+      "id": "1176",
+      "title": "Macbook Air",
+      "description": "Apple CPU device",
       "price": 1099
     },
     {
-      "id": "fe62",
-      "title": "Macbook Pro",
-      "description": "Apple Laptop",
-      "price": 2999
-    },
-    {
-      "id": "1df0",
-      "title": "Macbook Air",
-      "description": "Apple CPU device",
-      "price": 1399
+      "id": "1adb",
+      "title": "Airpods Pro",
+      "description": "Apple Headphones",
+      "price": 249
     }
   ],
   "page2Products": [
     {
-      "id": "dd4c",
-      "title": "iPad",
-      "description": "Apple Tablet",
-      "price": 899
+      "id": "fe47",
+      "title": "iPad Pro",
+      "description": "Apple PRO Tablet",
+      "price": 999
     },
     {
-      "id": "dd10",
+      "id": "25a4",
       "title": "iPad Air",
       "description": "Apple Tablet",
-      "price": 1299
+      "price": 699
     },
     {
-      "id": "f876",
-      "title": "iPad Pro 13\"",
-      "description": "Apple Pro Tablet",
-      "price": 1599
+      "id": "217f",
+      "title": "Airpods Max",
+      "description": "Apple Over-ear Headphones",
+      "price": 599
     }
   ],
   "page3Products": [
     {
-      "id": "1c5d",
-      "title": "Airpods Pro",
-      "description": "Apple Headphones",
-      "price": 259
+      "id": "a092",
+      "title": "HomePod",
+      "description": "Apple Smart home device",
+      "price": 699
     },
     {
-      "id": "469d",
-      "title": "Airpods 4",
-      "description": "Apple Headphones Wireless",
+      "id": "d81a",
+      "title": "Apple Pencil",
+      "description": "Apple Stylus",
       "price": 199
     },
     {
-      "id": "6a95",
-      "title": "Airpods Max",
-      "description": "Apple Pro Headphones",
-      "price": 599
+      "title": "HomePod mini",
+      "description": "Apple Smart home device",
+      "price": 55,
+      "id": "960c"
     }
   ]
 }

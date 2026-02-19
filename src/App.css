@@ -141,6 +141,13 @@ button {
   background: linear-gradient(90deg,#0071e3,#00c6ff);
 }
 
+/* CHECKBOXES */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .container { padding: 30px 15px; }

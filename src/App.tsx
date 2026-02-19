@@ -7,6 +7,7 @@ type Product = {
   description: string;
   price: number;
 };
+
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function App() {
@@ -33,6 +34,9 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTriggered, setSearchTriggered] = useState(false);
 
+  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const [selectAll, setSelectAll] = useState(false);
+
   const pageKey = `page${currentPage}Products`;
 
   // ================= FETCH =================
@@ -42,10 +46,12 @@ export default function App() {
     fetch(`${API_BASE}/page3Products`).then(r => r.json()).then(setPage3Products);
   }, []);
 
-  // reset search when switching pages
+  // reset search and selection when switching pages
   useEffect(() => {
     setSearchTerm("");
     setSearchTriggered(false);
+    setSelectedProducts([]);
+    setSelectAll(false);
   }, [currentPage]);
 
   const getCurrentProducts = () => {
@@ -86,6 +92,7 @@ export default function App() {
   const deleteProduct = (id: number) => {
     fetch(`${API_BASE}/${pageKey}/${id}`, { method: "DELETE" })
       .then(() => setCurrentProducts(getCurrentProducts().filter(p => p.id !== id)));
+    setSelectedProducts(selectedProducts.filter(pid => pid !== id));
   };
 
   // ================= EDIT =================
@@ -125,7 +132,15 @@ export default function App() {
     p.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // ================= RENDER =================
+  // keep selectAll checkbox in sync
+  useEffect(() => {
+    if (filteredProducts.length === 0) {
+      setSelectAll(false);
+      return;
+    }
+    setSelectAll(filteredProducts.every(p => selectedProducts.includes(p.id)));
+  }, [selectedProducts, filteredProducts]);
+
   return (
     <div className="container">
       <h2>Luxury Product Manager</h2>
@@ -150,6 +165,21 @@ export default function App() {
       <table>
         <thead>
           <tr>
+            <th>
+              <input
+                type="checkbox"
+                checked={selectAll}
+                onChange={(e) => {
+                  const checked = e.target.checked;
+                  setSelectAll(checked);
+                  if (checked) {
+                    setSelectedProducts(filteredProducts.map(p => p.id));
+                  } else {
+                    setSelectedProducts([]);
+                  }
+                }}
+              />
+            </th>
             <th>Title</th>
             <th>Description</th>
             <th>Price</th>
@@ -160,13 +190,27 @@ export default function App() {
         <tbody>
           {filteredProducts.length === 0 ? (
             <tr>
-              <td colSpan={4} className="no-results">
+              <td colSpan={5} className="no-results">
                 No products found
               </td>
             </tr>
           ) : (
             filteredProducts.map(p => (
               <tr key={p.id}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedProducts.includes(p.id)}
+                    onChange={(e) => {
+                      const checked = e.target.checked;
+                      if (checked) {
+                        setSelectedProducts([...selectedProducts, p.id]);
+                      } else {
+                        setSelectedProducts(selectedProducts.filter(id => id !== p.id));
+                      }
+                    }}
+                  />
+                </td>
                 <td>
                   {editingId === p.id ? (
                     <input
@@ -197,7 +241,6 @@ export default function App() {
                     p.title
                   )}
                 </td>
-
                 <td>
                   {editingId === p.id ? (
                     <input
@@ -210,7 +253,6 @@ export default function App() {
                     p.description
                   )}
                 </td>
-
                 <td>
                   {editingId === p.id ? (
                     <input
@@ -224,7 +266,6 @@ export default function App() {
                     formatPrice(p.price)
                   )}
                 </td>
-
                 <td>
                   {editingId === p.id ? (
                     <>
