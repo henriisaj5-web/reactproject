@@ -12,7 +12,6 @@ const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState(1);
-
   const [page1Products, setPage1Products] = useState<Product[]>([]);
   const [page2Products, setPage2Products] = useState<Product[]>([]);
   const [page3Products, setPage3Products] = useState<Product[]>([]);
@@ -37,6 +36,7 @@ export default function App() {
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
 
+  const TOTAL_PAGES = 3; // Dynamic total pages
   const pageKey = `page${currentPage}Products`;
 
   // ================= FETCH =================
@@ -153,10 +153,7 @@ export default function App() {
           value={searchTerm}
           onChange={handleSearchInput}
         />
-        <button
-          className="search-btn"
-          onClick={() => setSearchTriggered(true)}
-        >
+        <button className="search-btn" onClick={() => setSearchTriggered(true)}>
           Search
         </button>
       </div>
@@ -172,11 +169,9 @@ export default function App() {
                 onChange={(e) => {
                   const checked = e.target.checked;
                   setSelectAll(checked);
-                  if (checked) {
-                    setSelectedProducts(filteredProducts.map(p => p.id));
-                  } else {
-                    setSelectedProducts([]);
-                  }
+                  setSelectedProducts(
+                    checked ? filteredProducts.map(p => p.id) : []
+                  );
                 }}
               />
             </th>
@@ -203,11 +198,11 @@ export default function App() {
                     checked={selectedProducts.includes(p.id)}
                     onChange={(e) => {
                       const checked = e.target.checked;
-                      if (checked) {
-                        setSelectedProducts([...selectedProducts, p.id]);
-                      } else {
-                        setSelectedProducts(selectedProducts.filter(id => id !== p.id));
-                      }
+                      setSelectedProducts(
+                        checked
+                          ? [...selectedProducts, p.id]
+                          : selectedProducts.filter(id => id !== p.id)
+                      );
                     }}
                   />
                 </td>
@@ -309,28 +304,38 @@ export default function App() {
             value={addForm.price}
             onChange={e => setAddForm({ ...addForm, price: e.target.value })}
           />
-          <button className="add" onClick={addProduct}>Add</button>
+          <button className="add" onClick={addProduct}>
+            Add
+          </button>
         </div>
       </div>
 
       {/* PAGINATION */}
       <div className="pagination">
-        <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>
-          Previous
+        <button
+          className="nav-btn"
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(p => p - 1)}
+        >
+          ← Previous
         </button>
 
-        {[1,2,3].map(p => (
+        {Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1).map(page => (
           <button
-            key={p}
-            className={currentPage === p ? "active" : ""}
-            onClick={() => setCurrentPage(p)}
+            key={page}
+            className={`page-btn ${currentPage === page ? "active" : ""}`}
+            onClick={() => setCurrentPage(page)}
           >
-            {p}
+            {page}
           </button>
         ))}
 
-        <button disabled={currentPage === 3} onClick={() => setCurrentPage(p => p + 1)}>
-          Next
+        <button
+          className="nav-btn"
+          disabled={currentPage === TOTAL_PAGES}
+          onClick={() => setCurrentPage(p => p + 1)}
+        >
+          Next →
         </button>
       </div>
     </div>
