@@ -1,74 +1,38 @@
 {
   "page1Products": [
-    {
-      "id": "3b5d",
-      "title": "iPhone 15",
-      "description": "Apple Smartphone",
-      "price": 799
-    },
-    {
-      "id": "0dda",
-      "title": "iPhone 17",
-      "description": "Apple Smartphone",
-      "price": 899
-    },
-    {
-      "id": "4640",
-      "title": "Macbook Pro",
-      "description": "Apple CPU device",
-      "price": 1359
-    },
-    {
-      "id": "1176",
-      "title": "Macbook Air",
-      "description": "Apple CPU device",
-      "price": 1099
-    },
-    {
-      "id": "1adb",
-      "title": "Airpods Pro",
-      "description": "Apple Headphones",
-      "price": 249
-    }
+    { "id": 1, "title": "iPhone 14", "description": "Latest iPhone model", "price": 999 },
+    { "id": 2, "title": "iPhone 14 Pro", "description": "Pro version with better camera", "price": 1099 },
+    { "id": 3, "title": "iPad Air", "description": "Lightweight tablet", "price": 599 },
+    { "id": 4, "title": "iPad Pro 11", "description": "Professional tablet", "price": 799 },
+    { "id": 5, "title": "iPad Pro 12.9", "description": "Big screen tablet", "price": 1099 },
+    { "id": 6, "title": "MacBook Air M2", "description": "Lightweight laptop", "price": 1199 },
+    { "id": 7, "title": "MacBook Pro 13", "description": "Pro laptop 13-inch", "price": 1299 },
+    { "id": 8, "title": "MacBook Pro 14", "description": "Pro laptop 14-inch", "price": 1999 },
+    { "id": 9, "title": "MacBook Pro 16", "description": "Pro laptop 16-inch", "price": 2499 },
+    { "id": 10, "title": "Apple Watch Series 8", "description": "Latest smartwatch", "price": 399 }
   ],
   "page2Products": [
-    {
-      "id": "fe47",
-      "title": "iPad Pro",
-      "description": "Apple PRO Tablet",
-      "price": 999
-    },
-    {
-      "id": "25a4",
-      "title": "iPad Air",
-      "description": "Apple Tablet",
-      "price": 699
-    },
-    {
-      "id": "217f",
-      "title": "Airpods Max",
-      "description": "Apple Over-ear Headphones",
-      "price": 599
-    }
+    { "id": 11, "title": "Apple Watch SE", "description": "Affordable smartwatch", "price": 249 },
+    { "id": 12, "title": "AirPods Pro", "description": "Noise-cancelling earbuds", "price": 249 },
+    { "id": 13, "title": "AirPods 3rd Gen", "description": "Wireless earbuds", "price": 179 },
+    { "id": 14, "title": "HomePod Mini", "description": "Smart speaker", "price": 99 },
+    { "id": 15, "title": "Apple TV 4K", "description": "Streaming device", "price": 179 },
+    { "id": 16, "title": "Magic Keyboard", "description": "Wireless keyboard", "price": 99 },
+    { "id": 17, "title": "Magic Mouse", "description": "Wireless mouse", "price": 79 },
+    { "id": 18, "title": "Magic Trackpad", "description": "Wireless trackpad", "price": 129 },
+    { "id": 19, "title": "iMac 24", "description": "All-in-one desktop", "price": 1299 },
+    { "id": 20, "title": "Mac Mini M2", "description": "Compact desktop", "price": 699 }
   ],
   "page3Products": [
-    {
-      "id": "a092",
-      "title": "HomePod",
-      "description": "Apple Smart home device",
-      "price": 699
-    },
-    {
-      "id": "d81a",
-      "title": "Apple Pencil",
-      "description": "Apple Stylus",
-      "price": 199
-    },
-    {
-      "title": "HomePod mini",
-      "description": "Apple Smart home device",
-      "price": 55,
-      "id": "960c"
-    }
+    { "id": 21, "title": "iPhone 13", "description": "Previous generation iPhone", "price": 799 },
+    { "id": 22, "title": "iPhone 13 Pro", "description": "Previous gen Pro model", "price": 999 },
+    { "id": 23, "title": "iPad 10th Gen", "description": "Standard iPad", "price": 449 },
+    { "id": 24, "title": "Apple Pencil 2", "description": "Stylus for iPad", "price": 129 },
+    { "id": 25, "title": "Smart Keyboard Folio", "description": "Keyboard for iPad", "price": 179 },
+    { "id": 26, "title": "AirPods Max", "description": "Over-ear headphones", "price": 549 },
+    { "id": 27, "title": "AppleCare+", "description": "Extended warranty", "price": 199 },
+    { "id": 28, "title": "iPhone SE", "description": "Budget iPhone", "price": 429 },
+    { "id": 29, "title": "Mac Studio", "description": "High-end desktop", "price": 1999 },
+    { "id": 30, "title": "Studio Display", "description": "Apple 5K monitor", "price": 1599 }
   ]
 }
