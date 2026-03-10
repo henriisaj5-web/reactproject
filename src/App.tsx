@@ -2,179 +2,136 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 type Product = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   price: number;
 };
 
-const API_BASE = import.meta.env.VITE_API_BASE;
+const API_BASE = "http://localhost:3000/posts";
+const ITEMS_PER_PAGE = 5;
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [page1Products, setPage1Products] = useState<Product[]>([]);
-  const [page2Products, setPage2Products] = useState<Product[]>([]);
-  const [page3Products, setPage3Products] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const [editForm, setEditForm] = useState({
     title: "",
     description: "",
-    price: ""
+    price: "",
   });
 
   const [addForm, setAddForm] = useState({
     title: "",
     description: "",
-    price: ""
+    price: "",
   });
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchTriggered, setSearchTriggered] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
-  const [selectAll, setSelectAll] = useState(false);
+  // ================= FETCH PRODUCTS =================
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `${API_BASE}?_page=${currentPage}&_limit=${ITEMS_PER_PAGE}`
+      );
+      const totalCount = res.headers.get("X-Total-Count");
+      if (totalCount) {
+        setTotalPages(Math.ceil(Number(totalCount) / ITEMS_PER_PAGE));
+      }
+      const data = await res.json();
+      setProducts(data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const TOTAL_PAGES = 3; // Dynamic total pages
-  const pageKey = `page${currentPage}Products`;
-
-  // ================= FETCH =================
   useEffect(() => {
-    fetch(`${API_BASE}/page1Products`).then(r => r.json()).then(setPage1Products);
-    fetch(`${API_BASE}/page2Products`).then(r => r.json()).then(setPage2Products);
-    fetch(`${API_BASE}/page3Products`).then(r => r.json()).then(setPage3Products);
-  }, []);
-
-  // reset search and selection when switching pages
-  useEffect(() => {
-    setSearchTerm("");
-    setSearchTriggered(false);
-    setSelectedProducts([]);
-    setSelectAll(false);
+    fetchProducts();
   }, [currentPage]);
-
-  const getCurrentProducts = () => {
-    if (currentPage === 1) return page1Products;
-    if (currentPage === 2) return page2Products;
-    return page3Products;
-  };
-
-  const setCurrentProducts = (data: Product[]) => {
-    if (currentPage === 1) setPage1Products(data);
-    else if (currentPage === 2) setPage2Products(data);
-    else setPage3Products(data);
-  };
 
   const formatPrice = (price: number) => `$${price.toLocaleString()}`;
 
-  // ================= ADD =================
-  const addProduct = () => {
-    if (!addForm.title || !addForm.price) return alert("Title and Price required");
+  // ================= ADD PRODUCT =================
+  const addProduct = async () => {
+    if (!addForm.title || !addForm.price) {
+      alert("Title and Price are required");
+      return;
+    }
 
-    fetch(`${API_BASE}/${pageKey}`, {
+    await fetch(API_BASE, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title: addForm.title,
         description: addForm.description,
-        price: Number(addForm.price)
-      })
-    })
-      .then(r => r.json())
-      .then(data => {
-        setCurrentProducts([...getCurrentProducts(), data]);
-        setAddForm({ title: "", description: "", price: "" });
-      });
+        price: Number(addForm.price),
+      }),
+    });
+
+    setAddForm({ title: "", description: "", price: "" });
+    fetchProducts();
   };
 
-  // ================= DELETE =================
-  const deleteProduct = (id: number) => {
-    fetch(`${API_BASE}/${pageKey}/${id}`, { method: "DELETE" })
-      .then(() => setCurrentProducts(getCurrentProducts().filter(p => p.id !== id)));
-    setSelectedProducts(selectedProducts.filter(pid => pid !== id));
+  // ================= DELETE PRODUCT =================
+  const deleteProduct = async (id: string) => {
+    await fetch(`${API_BASE}/${id}`, { method: "DELETE" });
+    fetchProducts();
   };
 
-  // ================= EDIT =================
-  const startEdit = (p: Product) => {
-    setEditingId(p.id);
+  // ================= EDIT PRODUCT =================
+  const startEdit = (product: Product) => {
+    setEditingId(product.id);
     setEditForm({
-      title: p.title,
-      description: p.description,
-      price: String(p.price)
+      title: product.title,
+      description: product.description,
+      price: String(product.price),
     });
   };
 
-  const saveEdit = (id: number) => {
-    fetch(`${API_BASE}/${pageKey}/${id}`, {
+  const saveEdit = async (id: string) => {
+    await fetch(`${API_BASE}/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title: editForm.title,
         description: editForm.description,
-        price: Number(editForm.price)
-      })
-    })
-      .then(r => r.json())
-      .then(updated => {
-        setCurrentProducts(getCurrentProducts().map(p => (p.id === id ? updated : p)));
-        setEditingId(null);
-      });
+        price: Number(editForm.price),
+      }),
+    });
+    setEditingId(null);
+    fetchProducts();
   };
 
-  // ================= SEARCH =================
-  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    setSearchTriggered(false);
-  };
-
-  const filteredProducts = getCurrentProducts().filter(p =>
-    p.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // ================= SEARCH FILTER =================
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  // keep selectAll checkbox in sync
-  useEffect(() => {
-    if (filteredProducts.length === 0) {
-      setSelectAll(false);
-      return;
-    }
-    setSelectAll(filteredProducts.every(p => selectedProducts.includes(p.id)));
-  }, [selectedProducts, filteredProducts]);
 
   return (
     <div className="container">
       <h2>Luxury Product Manager</h2>
 
       {/* SEARCH */}
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder={`Search products on page ${currentPage}...`}
-          value={searchTerm}
-          onChange={handleSearchInput}
-        />
-        <button className="search-btn" onClick={() => setSearchTriggered(true)}>
-          Search
-        </button>
-      </div>
+      <input
+        className="search-input"
+        type="text"
+        placeholder="Search products..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
 
       {/* TABLE */}
       <table>
         <thead>
           <tr>
-            <th>
-              <input
-                type="checkbox"
-                checked={selectAll}
-                onChange={(e) => {
-                  const checked = e.target.checked;
-                  setSelectAll(checked);
-                  setSelectedProducts(
-                    checked ? filteredProducts.map(p => p.id) : []
-                  );
-                }}
-              />
-            </th>
             <th>Title</th>
             <th>Description</th>
             <th>Price</th>
@@ -183,98 +140,64 @@ export default function App() {
         </thead>
 
         <tbody>
-          {filteredProducts.length === 0 ? (
+          {loading ? (
             <tr>
-              <td colSpan={5} className="no-results">
-                No products found
-              </td>
+              <td colSpan={4}>Loading...</td>
+            </tr>
+          ) : filteredProducts.length === 0 ? (
+            <tr>
+              <td colSpan={4}>No products found</td>
             </tr>
           ) : (
-            filteredProducts.map(p => (
-              <tr key={p.id}>
+            filteredProducts.map((product) => (
+              <tr key={product.id}>
                 <td>
-                  <input
-                    type="checkbox"
-                    checked={selectedProducts.includes(p.id)}
-                    onChange={(e) => {
-                      const checked = e.target.checked;
-                      setSelectedProducts(
-                        checked
-                          ? [...selectedProducts, p.id]
-                          : selectedProducts.filter(id => id !== p.id)
-                      );
-                    }}
-                  />
-                </td>
-                <td>
-                  {editingId === p.id ? (
+                  {editingId === product.id ? (
                     <input
                       value={editForm.title}
-                      onChange={e =>
+                      onChange={(e) =>
                         setEditForm({ ...editForm, title: e.target.value })
                       }
                     />
-                  ) : searchTerm && searchTriggered ? (
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: p.title.replace(
-                          new RegExp(`(${searchTerm})`, "gi"),
-                          `<span class="highlight">$1</span>`
-                        )
-                      }}
-                    />
-                  ) : searchTerm ? (
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: p.title.replace(
-                          new RegExp(`(${searchTerm})`, "gi"),
-                          `<span class="plain-highlight">$1</span>`
-                        )
-                      }}
-                    />
                   ) : (
-                    p.title
+                    product.title
                   )}
                 </td>
                 <td>
-                  {editingId === p.id ? (
+                  {editingId === product.id ? (
                     <input
                       value={editForm.description}
-                      onChange={e =>
+                      onChange={(e) =>
                         setEditForm({ ...editForm, description: e.target.value })
                       }
                     />
                   ) : (
-                    p.description
+                    product.description
                   )}
                 </td>
                 <td>
-                  {editingId === p.id ? (
+                  {editingId === product.id ? (
                     <input
                       type="number"
                       value={editForm.price}
-                      onChange={e =>
+                      onChange={(e) =>
                         setEditForm({ ...editForm, price: e.target.value })
                       }
                     />
                   ) : (
-                    formatPrice(p.price)
+                    formatPrice(product.price)
                   )}
                 </td>
                 <td>
-                  {editingId === p.id ? (
+                  {editingId === product.id ? (
                     <>
-                      <button onClick={() => saveEdit(p.id)}>Save</button>
-                      <button className="cancel" onClick={() => setEditingId(null)}>
-                        Cancel
-                      </button>
+                      <button onClick={() => saveEdit(product.id)}>Save</button>
+                      <button onClick={() => setEditingId(null)}>Cancel</button>
                     </>
                   ) : (
                     <>
-                      <button onClick={() => startEdit(p)}>Edit</button>
-                      <button className="delete" onClick={() => deleteProduct(p.id)}>
-                        Delete
-                      </button>
+                      <button onClick={() => startEdit(product)}>Edit</button>
+                      <button onClick={() => deleteProduct(product.id)}>Delete</button>
                     </>
                   )}
                 </td>
@@ -284,56 +207,54 @@ export default function App() {
         </tbody>
       </table>
 
-      {/* ADD FORM */}
-      <div className="add-form">
-        <h3>Add Product (Page {currentPage})</h3>
-        <div className="add-row">
-          <input
-            placeholder="Title"
-            value={addForm.title}
-            onChange={e => setAddForm({ ...addForm, title: e.target.value })}
-          />
-          <input
-            placeholder="Description"
-            value={addForm.description}
-            onChange={e => setAddForm({ ...addForm, description: e.target.value })}
-          />
-          <input
-            type="number"
-            placeholder="Price"
-            value={addForm.price}
-            onChange={e => setAddForm({ ...addForm, price: e.target.value })}
-          />
-          <button className="add" onClick={addProduct}>
-            Add
-          </button>
-        </div>
+      {/* ADD PRODUCT */}
+      <div className="add-section">
+        <h3>Add Product</h3>
+        <input
+          placeholder="Title"
+          value={addForm.title}
+          onChange={(e) => setAddForm({ ...addForm, title: e.target.value })}
+        />
+        <input
+          placeholder="Description"
+          value={addForm.description}
+          onChange={(e) =>
+            setAddForm({ ...addForm, description: e.target.value })
+          }
+        />
+        <input
+          type="number"
+          placeholder="Price"
+          value={addForm.price}
+          onChange={(e) => setAddForm({ ...addForm, price: e.target.value })}
+        />
+        <button onClick={addProduct}>Add</button>
       </div>
 
       {/* PAGINATION */}
       <div className="pagination">
         <button
-          className="nav-btn"
           disabled={currentPage === 1}
-          onClick={() => setCurrentPage(p => p - 1)}
+          onClick={() => setCurrentPage((prev) => prev - 1)}
         >
           ← Previous
         </button>
 
-        {Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1).map(page => (
-          <button
-            key={page}
-            className={`page-btn ${currentPage === page ? "active" : ""}`}
-            onClick={() => setCurrentPage(page)}
-          >
-            {page}
-          </button>
-        ))}
+        {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+          (page) => (
+            <button
+              key={page}
+              className={currentPage === page ? "active" : ""}
+              onClick={() => setCurrentPage(page)}
+            >
+              {page}
+            </button>
+          )
+        )}
 
         <button
-          className="nav-btn"
-          disabled={currentPage === TOTAL_PAGES}
-          onClick={() => setCurrentPage(p => p + 1)}
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((prev) => prev + 1)}
         >
           Next →
         </button>
