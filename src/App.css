@@ -154,3 +154,52 @@ input[type="checkbox"] {
   .add-row { flex-direction: column; }
   table { font-size: 14px; }
 }
+.search-input {
+  margin-bottom: 15px;
+  padding: 8px;
+  width: 250px;
+}
+
+.add-section {
+  margin-top: 30px;
+}
+
+/* ===== Modern Pagination ===== */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.page-number,
+.page-nav {
+  min-width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background-color: #f2f2f2;
+}
+
+.page-number:hover,
+.page-nav:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+.page-number.active {
+  background: linear-gradient(135deg, #000, #444);
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.page-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
