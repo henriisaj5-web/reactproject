@@ -1,70 +1,14 @@
 {
   "posts": [
-    {
-      "id": "1",
-      "title": "iPhone 14",
-      "description": "Latest model",
-      "price": 999
-    },
-    {
-      "id": "2",
-      "title": "MacBook Air",
-      "description": "M2 Chip",
-      "price": 1199
-    },
-    {
-      "id": "b1d6",
-      "title": "iPhone 17",
-      "description": "Apple Smartphone",
-      "price": 899
-    },
-    {
-      "id": "7db5",
-      "title": "iPad Pro",
-      "description": "Apple PRO Tablet",
-      "price": 1299
-    },
-    {
-      "id": "4f32",
-      "title": "Macbook Pro",
-      "description": "Apple CPU Device",
-      "price": 1355
-    },
-    {
-      "id": "b9ba",
-      "title": "Airpods Pro",
-      "description": "Apple Headphones",
-      "price": 249
-    },
-    {
-      "id": "b903",
-      "title": "Airpods Max",
-      "description": "Apple Headphones",
-      "price": 255
-    },
-    {
-      "id": "40a0",
-      "title": "Airpods Pro",
-      "description": "Apple Headphones",
-      "price": 249
-    },
-    {
-      "id": "4ae7",
-      "title": "Macbook Pro",
-      "description": "Apple CPU",
-      "price": 1599
-    },
-    {
-      "id": "2dd3",
-      "title": "iPad Air",
-      "description": "Apple Tablet",
-      "price": 999
-    },
-    {
-      "id": "16b0",
-      "title": "Airpods Pro",
-      "description": "Apple headphones",
-      "price": 249
-    }
+    { "id": "1", "title": "iPhone 15 Pro", "description": "Titanium design", "price": 999 },
+    { "id": "2", "title": "MacBook Air", "description": "M3 Chip, 13-inch", "price": 1099 },
+    { "id": "3", "title": "iPad Pro", "description": "M4 Chip, OLED", "price": 999 },
+    { "id": "4", "title": "Watch Ultra 2", "description": "Rugged Titanium", "price": 799 },
+    { "id": "5", "title": "AirPods Max", "description": "High-fidelity audio", "price": 549 },
+    { "id": "6", "title": "Mac Studio", "description": "M2 Max, Desktop", "price": 1999 },
+    { "id": "7", "title": "Apple TV 4K", "description": "Dolby Vision", "price": 129 },
+    { "id": "8", "title": "HomePod", "description": "Siri Speaker", "price": 299 },
+    { "id": "9", "title": "iMac 24-inch", "description": "4.5K Retina Display", "price": 1299 },
+    { "id": "10", "title": "Vision Pro", "description": "Spatial Computing", "price": 3499 }
   ]
 }
